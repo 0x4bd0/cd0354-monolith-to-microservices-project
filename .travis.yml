@@ -1,2 +1,28 @@
+
 language: node_js
-script: 'true'
+node_js:
+  - 16
+services:
+  - docker
+# Pre-testing installs
+install:
+  - echo "nothing needs to be installed"
+# Scripts to be run such as tests
+before_script:
+  - echo "no tests"
+script:
+  - cd udagram-api-feed && docker build -t udagram-api-feed .
+  - docker tag udagram-api-feed abdoumjr/udagram-api-feed:latest && cd ..
+  - cd udagram-api-users && docker build -t udagram-api-user .
+  - docker tag udagram-api-user abdoumjr/udagram-api-user:latest && cd ..
+  - cd udagram-frontend && docker build -t udagram-frontend .
+  - docker tag udagram-frontend abdoumjr/udagram-frontend:latest && cd ..
+  - cd udagram-reverseproxy && docker build -t udagram-reverseproxy .
+  - docker tag nginx abdoumjr/udagram-reverseproxy:latest && cd ..
+# Tasks to perform after the process is successful. Formatting the Docker username and password as below enables you to programmatically log in without having the password exposed in logs.
+after_success:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - docker push abdoumjr/udagram-api-feed:latest
+  - docker push abdoumjr/udagram-api-user:latest
+  - docker push abdoumjr/udagram-frontend:latest
+  - docker push abdoumjr/udagram-reverseproxy:latest
