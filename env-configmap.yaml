@@ -4,7 +4,7 @@ metadata:
   name: env-config
 data:
   POSTGRES_DB: finalproject
-  AWS_BUCKET: arn:aws:s3:::0x4bd0-final-project
+  AWS_BUCKET: arn:aws:s3:::finalprojecta3chkoupi
   AWS_REGION: us-east-1
   AWS_PROFILE: default
   JWT_SECRET: testing
